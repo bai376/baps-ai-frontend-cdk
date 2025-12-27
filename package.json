@@ -4,8 +4,8 @@
   "description": "CDK Pipeline for BAPS AI Frontend Deployment",
   "main": "bin/pipeline-app.js",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
+    "build": "npx tsc",
+    "watch": "npx tsc -w",
     "cdk": "cdk",
     "synth": "cdk synth",
     "deploy": "cdk deploy",

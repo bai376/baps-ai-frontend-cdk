@@ -1,20 +1,20 @@
 import * as cdk from 'aws-cdk-lib';
-import * as pipelines from 'aws-cdk-lib/pipelines';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
+import * as pipelines from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
-import { InfrastructureStack } from './infrastructure-stack';
 import {
-  GITHUB_OWNER,
-  CDK_GITHUB_REPO,
   CDK_GITHUB_BRANCH,
-  FRONTEND_GITHUB_REPO,
-  FRONTEND_GITHUB_BRANCH,
+  CDK_GITHUB_REPO,
   CODESTAR_CONNECTION_ARN,
+  FRONTEND_GITHUB_BRANCH,
+  FRONTEND_GITHUB_REPO,
+  GITHUB_OWNER,
   PIPELINE_NAME,
 } from './config/constants';
+import { InfrastructureStack } from './infrastructure-stack';
 
 
 export class PipelineStack extends cdk.Stack {
@@ -53,8 +53,7 @@ export class PipelineStack extends cdk.Stack {
       synth: new pipelines.ShellStep('Synth', {
         input: cdkSource,
         installCommands: [
-          'npm install -g pnpm',
-          'pnpm install --frozen-lockfile',
+          'npm ci',
         ],
         commands: [
           'npx cdk synth',
@@ -91,12 +90,11 @@ export class PipelineStack extends cdk.Stack {
           buildImage: codebuild.LinuxArmBuildImage.AMAZON_LINUX_2023_STANDARD_3_0,
         },
       installCommands: [
-        'npm install -g pnpm',
-        'pnpm install --frozen-lockfile',
+        'npm ci',
       ],
       commands: [
         'echo "Building Next.js app..."',
-        'pnpm run build',
+        'npm run build',
         'echo "Preparing artifacts..."',
         'mkdir -p build-output',
         // Next.js static export outputs to 'out' directory
